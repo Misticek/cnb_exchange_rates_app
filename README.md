@@ -1,0 +1,1 @@
+# CNB Exchange rates app documentation

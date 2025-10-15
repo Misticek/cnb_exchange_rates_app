@@ -1,0 +1,46 @@
+# Node dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+client/dist/
+server/dist/
+
+# Vite cache
+.vite/
+client/.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+
+# Misc
+*.local
+.cache/
+.tmp/
+
+# Generated assets
+public/*.svg
+!public/vite.svg
