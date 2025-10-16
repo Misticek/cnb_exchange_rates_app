@@ -54,13 +54,15 @@ function App() {
     return amountCzk * (selectedRate.amount / selectedRate.rate)
   }, [czkAmount, selectedRate])
 
+  const getErrorMessage = (message?: string) => {
+    return <ErrorText>Error: {message || 'Unknown error'}</ErrorText>
+  }
+
   return (
     <AppContainer>
       <h1>Czech National Bank Exchange Rates</h1>
       {isLoading && <p>Loading latest rates…</p>}
-      {error && (
-        <ErrorText>Error: {error instanceof Error ? error.message : 'Failed to load rates'}</ErrorText>
-      )}
+      {error && getErrorMessage(error.message)}
       {!isLoading && !error && data && (
         <>
           <p style={{ marginTop: 0 }}>Source: CNB daily rates — {data.date}</p>
