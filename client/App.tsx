@@ -1,62 +1,57 @@
-import React from 'react'
-import { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 
 import type { ExchangeRate, ExchangeRatesResponse } from '../common/types/exchange'
 import {
   AppContainer,
+  ConvertedBox,
   ErrorText,
   Grid,
   GridSpan2,
-  Label,
   Input,
-  Select,
-  ConvertedBox,
+  Label,
   RatesTitle,
   ScrollX,
+  Select,
   Table,
-  ThLeft,
-  ThRight,
   Td,
-  TdRight
+  TdRight,
+  ThLeft,
+  ThRight
 } from './styles'
 
-const RATES_URL = import.meta.env.VITE_CNB_URL || 'http://127.0.0.1:3003/api/cnb/daily'
+const API_RATES_URL = import.meta.env.API_RATES_URL || 'http://127.0.0.1:3003/api/cnb/daily'
 
 function App() {
   const [czkAmount, setCzkAmount] = useState('')
-  const [selectedCode, setSelectedCode] = useState('')
+  const [code, setCode] = useState('')
 
-  // Use React Query to fetch exchange rates
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<ExchangeRatesResponse>({
     queryKey: ['cnbRates'],
     queryFn: async () => {
-      const res = await fetch(RATES_URL, { cache: 'no-cache' })
+      const res = await fetch(API_RATES_URL, { cache: 'no-cache' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const rawData = await res.json()
-      return rawData
+      return await res.json()
     },
   })
 
   // Set initial selected currency when data loads
   useEffect(() => {
-    if (data?.rates?.length && !selectedCode) {
-      setSelectedCode(data.rates[0].currencyCode)
+    if (data?.rates?.length && !code) {
+      setCode(data.rates[0].currencyCode)
     }
-  }, [data, selectedCode])
+  }, [data, code])
 
   const selectedRate = useMemo(
-    () => data?.rates?.find(r => r.currencyCode === selectedCode) || null,
-    [data?.rates, selectedCode]
+    () => data?.rates?.find((rate: ExchangeRate) => rate.currencyCode === code) || null,
+    [data?.rates, code]
   )
 
   const converted = useMemo(() => {
+    // TODO: Alternatively this could be in separate method so that it can be tested
     const amountCzk = Number(String(czkAmount).replace(',', '.'))
     if (!selectedRate || !isFinite(amountCzk)) return null
-    // CNB rate = CZK per "amount" units of currency
-    // 1 foreign unit costs (rate/amount) CZK. For CZK -> foreign: amountCzk / (rate/amount)
-    const result = amountCzk * (selectedRate.amount / selectedRate.rate)
-    return result
+    return amountCzk * (selectedRate.amount / selectedRate.rate)
   }, [czkAmount, selectedRate])
 
   return (
@@ -86,8 +81,8 @@ function App() {
               <Label htmlFor="code">Currency</Label>
               <Select
                 id="code"
-                value={selectedCode}
-                onChange={e => setSelectedCode(e.target.value)}
+                value={code}
+                onChange={e => setCode(e.target.value)}
               >
                 {data.rates.map((r: ExchangeRate) => (
                   <option key={r.currencyCode} value={r.currencyCode}>{r.currencyCode} — {r.currency}</option>
@@ -101,7 +96,7 @@ function App() {
                 {converted == null || isNaN(converted) ? (
                   '-'
                 ) : (
-                  <strong>{converted.toLocaleString(undefined, { maximumFractionDigits: 4 })} {selectedCode}</strong>
+                  <strong>{converted.toLocaleString(undefined, { maximumFractionDigits: 4 })} {code}</strong>
                 )}
               </ConvertedBox>
             </GridSpan2>
@@ -120,13 +115,13 @@ function App() {
               </tr>
               </thead>
               <tbody>
-              {data.rates.map((r: ExchangeRate) => (
-                <tr key={r.currencyCode}>
-                  <Td>{r.country}</Td>
-                  <Td>{r.currency}</Td>
-                  <TdRight>{r.amount}</TdRight>
-                  <Td>{r.currencyCode}</Td>
-                  <TdRight>{r.rate.toLocaleString(undefined, {
+              {data.rates.map((rate: ExchangeRate) => (
+                <tr key={rate.currencyCode}>
+                  <Td>{rate.country}</Td>
+                  <Td>{rate.currency}</Td>
+                  <TdRight>{rate.amount}</TdRight>
+                  <Td>{rate.currencyCode}</Td>
+                  <TdRight>{rate.rate.toLocaleString(undefined, {
                     minimumFractionDigits: 3,
                     maximumFractionDigits: 3
                   })}</TdRight>
@@ -155,7 +150,7 @@ function AppRoot({ client }: { client?: QueryClient }) {
   })
   return (
     <QueryClientProvider client={queryClient}>
-      <App />
+      <App/>
     </QueryClientProvider>
   )
 }

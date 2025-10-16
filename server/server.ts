@@ -3,30 +3,29 @@ import express from 'express'
 import type { Request, Response } from 'express'
 import type { ExchangeRate, ExchangeRatesResponse } from '../common/types/exchange'
 import dotenv from 'dotenv'
+
 dotenv.config()
-
-const PORT = process.env.PORT || 3003
-const CNB_DAILY_URL = process.env.CNB_DAILY_URL
-
-if (!CNB_DAILY_URL) {
-  if (process.env.NODE_ENV !== 'test') {
-    console.error('Error: CNB_DAILY_URL environment variable is not set.')
-    throw new Error('CNB_DAILY_URL environment variable is not set.')
-  }
-}
 
 interface CNBServerOptions {
   port?: number | string
-  cnbUrl: string
+  cnbUrl?: string
 }
 
 export class CNBServer {
-  private port: number
-  private cnbUrl: string
-  private app: express.Express
+  private readonly port: number
+  private readonly cnbUrl: string
+  private readonly app: express.Express
 
   constructor({ port, cnbUrl }: CNBServerOptions) {
-    this.port = typeof port === 'string' ? parseInt(port) : (port || 3003)
+    if (!port) {
+      console.error('Error: PORT environment variable is not set.')
+      throw new Error('Port is required')
+    }
+    if (!cnbUrl) {
+      console.error('Error: CNB_DAILY_URL environment variable is not set.')
+      throw new Error('CNB_DAILY_URL environment variable is not set.')
+    }
+    this.port = Number(port)
     this.cnbUrl = cnbUrl
     this.app = express()
 
@@ -158,7 +157,7 @@ export class CNBServer {
 }
 
 // Only auto-start outside test environment
-if (process.env.NODE_ENV !== 'test' && CNB_DAILY_URL) {
-  const server = new CNBServer({ port: PORT, cnbUrl: CNB_DAILY_URL })
+if (process.env.NODE_ENV !== 'test') {
+  const server = new CNBServer({ port: process.env.PORT, cnbUrl: process.env.CNB_DAILY_URL })
   server.start()
 }
