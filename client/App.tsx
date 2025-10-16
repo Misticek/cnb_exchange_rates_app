@@ -16,8 +16,7 @@ import {
   Table,
   Td,
   TdRight,
-  ThLeft,
-  ThRight
+  Th,
 } from './styles'
 
 const API_RATES_URL = import.meta.env.API_RATES_URL || 'http://127.0.0.1:3003/api/cnb/daily'
@@ -109,11 +108,11 @@ function App() {
             <Table>
               <thead>
               <tr>
-                <ThLeft>Country</ThLeft>
-                <ThLeft>Currency</ThLeft>
-                <ThRight>Amount</ThRight>
-                <ThLeft>Code</ThLeft>
-                <ThRight>Rate (CZK)</ThRight>
+                <Th>Country</Th>
+                <Th>Currency</Th>
+                <Th>Amount</Th>
+                <Th>Code</Th>
+                <Th>Rate (CZK)</Th>
               </tr>
               </thead>
               <tbody>

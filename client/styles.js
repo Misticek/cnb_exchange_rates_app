@@ -80,7 +80,7 @@ export const Input = styled.input`
 
 export const Select = styled.select`
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 40px 12px 16px;
   margin-top: 4px;
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -88,11 +88,15 @@ export const Select = styled.select`
   background-color: white;
   cursor: pointer;
   box-sizing: border-box;
-  
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+
   &:focus {
-    outline: none;
-    border-color: #4dabf7;
-    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.25);
+      outline: none;
+      border-color: #4dabf7;
+      box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.25);
   }
 `
 
@@ -147,19 +151,8 @@ export const Table = styled.table`
   border-collapse: collapse;
 `
 
-export const ThLeft = styled.th`
-  text-align: left;
-  border-bottom: 2px solid #dee2e6;
-  padding: 16px;
-  font-weight: 600;
-  color: #343a40;
-  background-color: #f8f9fa;
-  position: sticky;
-  top: 0;
-`
-
-export const ThRight = styled.th`
-  text-align: right;
+export const Th = styled.th`
+  
   border-bottom: 2px solid #dee2e6;
   padding: 16px;
   font-weight: 600;
