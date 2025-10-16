@@ -151,7 +151,7 @@ export class CNBServer {
       console.error('Uncaught exception:', error)
     })
     this.app.listen(this.port, () => {
-      console.log(`CNB Exchange rates: Server running on http://localhost:${this.port}`)
+      console.log(`CNB Exchange rates: Server running on port ${this.port}`)
     })
   }
 }
