@@ -3,19 +3,25 @@ import { useEffect, useMemo, useState } from 'react'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 
 import type { ExchangeRate, ExchangeRatesResponse } from '../common/types/exchange'
-import { AppContainer, ErrorText, Grid, GridSpan2, Label, Input, Select, ConvertedBox, RatesTitle, ScrollX, Table, ThLeft, ThRight, Td, TdRight } from './styles'
+import {
+  AppContainer,
+  ErrorText,
+  Grid,
+  GridSpan2,
+  Label,
+  Input,
+  Select,
+  ConvertedBox,
+  RatesTitle,
+  ScrollX,
+  Table,
+  ThLeft,
+  ThRight,
+  Td,
+  TdRight
+} from './styles'
 
 const RATES_URL = import.meta.env.VITE_CNB_URL || 'http://127.0.0.1:3003/api/cnb/daily'
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 2,
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      refetchOnWindowFocus: false,
-    },
-  },
-})
 
 function App() {
   const [czkAmount, setCzkAmount] = useState('')
@@ -90,7 +96,8 @@ function App() {
             </div>
             <GridSpan2>
               <Label>Converted amount</Label>
-              <ConvertedBox>
+              <ConvertedBox
+                data-testid="converted-box">
                 {converted == null || isNaN(converted) ? (
                   '-'
                 ) : (
@@ -119,7 +126,10 @@ function App() {
                   <Td>{r.currency}</Td>
                   <TdRight>{r.amount}</TdRight>
                   <Td>{r.currencyCode}</Td>
-                  <TdRight>{r.rate.toLocaleString(undefined, { minimumFractionDigits: 3, maximumFractionDigits: 3 })}</TdRight>
+                  <TdRight>{r.rate.toLocaleString(undefined, {
+                    minimumFractionDigits: 3,
+                    maximumFractionDigits: 3
+                  })}</TdRight>
                 </tr>
               ))}
               </tbody>
@@ -131,7 +141,18 @@ function App() {
   )
 }
 
-function AppRoot() {
+export { App }
+
+function AppRoot({ client }: { client?: QueryClient }) {
+  const queryClient = client || new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 2,
+        staleTime: 0, // force refetch per test instance
+        refetchOnWindowFocus: false,
+      },
+    },
+  })
   return (
     <QueryClientProvider client={queryClient}>
       <App />

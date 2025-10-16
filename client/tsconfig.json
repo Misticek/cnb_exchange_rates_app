@@ -8,7 +8,7 @@
     // See also https://aka.ms/tsconfig/module
     "module": "esnext",
     "target": "ES2020",
-    "types": [],
+    "types": ["vitest", "@testing-library/jest-dom"],
     "lib": [
       "DOM",
       "DOM.Iterable",
