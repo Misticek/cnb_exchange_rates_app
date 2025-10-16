@@ -3,10 +3,8 @@ import request from 'supertest'
 import { CNBServer } from './server'
 import type { ExchangeRate } from '../common/types/exchange'
 
-// Sample CNB daily text
 const sampleDailyText = `15 Oct 2025 # Daily rates\nCountry|Currency|Amount|Code|Rate\nUnited States|Dollar|1|USD|23.500\nEurozone|Euro|1|EUR|25.800\nJapan|Yen|100|JPY|15.800\n`
 
-// Helper to mock fetch success
 function mockFetchSuccess(text: string, contentType = 'text/plain') {
   ;(global as any).fetch = async () => ({
     ok: true,
@@ -99,7 +97,7 @@ describe('CNBServer fetchCNBData()', () => {
 
 describe('HTTP endpoints', () => {
   it('/health returns ok', async () => {
-    mockFetchSuccess(sampleDailyText) // ensure any accidental fetch works
+    mockFetchSuccess(sampleDailyText)
     const srv = new CNBServer({ port: 0, cnbUrl: process.env.CNB_DAILY_URL! })
     const res = await request(srv.getApp()).get('/health')
     expect(res.status).toBe(200)
