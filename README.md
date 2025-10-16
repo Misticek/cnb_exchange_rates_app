@@ -104,7 +104,7 @@ Reverse proxy (Nginx) doporuceni:
 
 ## 10. Poznamky k implementaci
 
-- API URL ma CORS policy, nelze pouzit primo v FE. Takze co zvolit? 
+- CNB API ma CORS policy, nelze pouzit primo v FE. Takze co zvolit? 
     - Moznost 1: https://github.com/ccoenraets/cors-proxy
     - Moznost 2: Udelat si tiny backend v node, ktery data fetchne, vyparsuje a vrati do FE uz JSON.
     - Vyhrala moznost 2. Chci mit business logiku na backendu.
