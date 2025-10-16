@@ -122,7 +122,7 @@ export class CNBServer {
       throw new Error(`CNB response HTTP ${cnbResponse.status}`)
     }
     const contentType = cnbResponse.headers.get('content-type') || ''
-    if (!contentType.includes('text/plain') && !contentType.includes('text/html')) {
+    if (!contentType.includes('text/plain')) {
       throw new Error(`Unexpected content type: ${contentType}`)
     }
     return CNBServer.parseDailyTxtToJson(await cnbResponse.text())
