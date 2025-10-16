@@ -37,7 +37,7 @@ Client (Vite):
 npm install
 ```
 
-### 6.3. Development (soubezný server + klient)
+### 6.3. Development (soubezny server + klient)
 ```
 npm run dev
 ```
