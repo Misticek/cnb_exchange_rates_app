@@ -1,7 +1,5 @@
 # CNB Exchange rates app documentation
 
----
-
 ## 1. Prehled
 Aplikace nacita a zobrazuje denne aktualizovane devizove kurzy z Ceske narodni banky. Server cast (Express) stahuje TXT soubor z CNB, parsuje ho do strukturovaneho JSONu a vystavuje REST endpoint. Frontend (React + Vite + React Query) data zobrazuje a umoznuje prevod castky z CZK do vybrane meny.
 
