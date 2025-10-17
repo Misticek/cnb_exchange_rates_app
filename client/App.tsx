@@ -19,7 +19,7 @@ import {
   Th,
 } from './styles'
 
-const API_RATES_URL = import.meta.env.API_RATES_URL || 'http://127.0.0.1:3003/api/cnb/daily'
+const API_RATES_URL = import.meta.env.VITE_API_RATES_URL || 'http://127.0.0.1:3003/api/cnb/daily'
 
 function App() {
   const [czkAmount, setCzkAmount] = useState('')
